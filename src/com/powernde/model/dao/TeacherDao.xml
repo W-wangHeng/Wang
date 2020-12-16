@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernde.model.dao.TeacherDao">
+    <resultMap id="BaseResultMap" type="com.powernde.entity.Teacher">
+        <id column="tea_id" jdbcType="INTEGER" property="teaId"/>
+        <result column="tea_name" jdbcType="VARCHAR" property="teaName"/>
+        <result column="tea_age" jdbcType="VARCHAR" property="teaAge"/>
+        <result column="tea_sex" jdbcType="VARCHAR" property="teaSex"/>
+        <result column="tea_date" jdbcType="DATE" property="teaDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    tea_id, tea_name, tea_age, tea_sex, tea_date
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_teacher
+        where tea_id = #{teaId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAlll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_teacher
+    </select>
+
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_teacher
+        <where>
+            <if test="teaName != null and teaName != ''">
+                and tea_name like concat('%',#{teaName},'%')
+            </if>
+            <!--<if test="teaAge != null and teaAge != ''">
+                and tea_age = #{teaAge}
+            </if>-->
+            <if test="teaSex != null and teaSex != ''">
+                and tea_sex = #{teaSex}
+            </if>
+            <!-- <if test="teaDate != null and teaDate != ''">
+                 and tea_date = #{teaDate}
+             </if>-->
+            <if test="teacher.teaEndAge != null and teacher.teaEndAge != ''">
+                and tea_age <![CDATA[<=]]> #{teacher.teaEndAge}
+            </if>
+
+            <if test="teacher.teaSex != null and teacher.teaSex != ''">
+                and tea_sex = #{teacher.teaSex}
+            </if>
+
+            <if test="teacher.teaEndDate != null and teacher.teaEndDate != ''">
+                and tea_date <![CDATA[>=]]> #{teacher.teaStartDate}
+            </if>
+
+            <if test="teacher.teaEndDate != null and teacher.teaEndDate != ''">
+                and tea_date <![CDATA[<=]]> #{teacher.teaEndDate}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectByPager" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_teacher
+        <where>
+            <if test="teacher.teaName != null and teacher.teaName != ''">
+                and tea_name like concat('%',#{teacher.teaName},'%')
+            </if>
+
+            <if test="teacher.teaStartAge != null and teacher.teaStartAge != ''">
+                and tea_age <![CDATA[>=]]> #{teacher.teaStartAge}
+            </if>
+            <if test="teacher.teaEndAge != null and teacher.teaEndAge != ''">
+                and tea_age <![CDATA[<=]]> #{teacher.teaEndAge}
+            </if>
+
+            <if test="teacher.teaSex != null and teacher.teaSex != ''">
+                and tea_sex = #{teacher.teaSex}
+            </if>
+
+            <!-- <if test="teacher.teaDate != null and teacher.teaDate != ''">
+                 and tea_date = #{teacher.teaDate}
+             </if>-->
+            <if test="teacher.teaEndDate != null and teacher.teaEndDate != ''">
+                and tea_date <![CDATA[>=]]> #{teacher.teaStartDate}
+            </if>
+
+            <if test="teacher.teaEndDate != null and teacher.teaEndDate != ''">
+                and tea_date <![CDATA[<=]]> #{teacher.teaEndDate}
+            </if>
+
+        </where>
+        limit #{pager.skipNo},#{pager.pageNo}
+    </select>
+
+    <select id="selectByPagers" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_teacher
+        <where>
+            <if test="teaName != null and teaName != ''">
+                and tea_name like concat('%',#{teaName},'%')
+            </if>
+            <if test="teaAge != null and teaAge != ''">
+                and tea_age = #{teaAge}
+            </if>
+            <if test="teaSex != null and teaSex != ''">
+                and tea_sex = #{teaSex}
+            </if>
+            <if test="teaDate != null and teaDate != ''">
+                and tea_date = #{teaDate}
+            </if>
+        </where>
+        limit #{skipNo},#{pageNo}
+    </select>
+
+
+    <select id="searchTotalCount" resultType="integer">
+        select
+        count(1)
+        from t_teacher
+        <where>
+            <if test="teaName != null and teaName != ''">
+                and tea_name like concat('%',#{teaName},'%')
+            </if>
+            <!-- <if test="teaAge != null and teaAge != ''">
+                 and tea_age = #{teaAge}
+             </if>-->
+            <if test="teaSex != null and teaSex != ''">
+                and tea_sex = #{teaSex}
+            </if>
+            <!-- <if test="teaDate != null and teaDate != ''">
+                 and tea_date = #{teaDate}
+             </if>-->
+            <if test="teaEndAge != null and teaEndAge != ''">
+                and tea_age <![CDATA[<=]]> #{teaEndAge}
+            </if>
+
+            <if test="teaSex != null and teaSex != ''">
+                and tea_sex = #{teaSex}
+            </if>
+
+            <if test="teaEndDate != null and teaEndDate != ''">
+                and tea_date <![CDATA[>=]]> #{teaStartDate}
+            </if>
+
+            <if test="teaEndDate != null and teaEndDate != ''">
+                and tea_date <![CDATA[<=]]> #{teaEndDate}
+            </if>
+        </where>
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_teacher
+    where tea_id = #{teaId,jdbcType=INTEGER}
+  </delete>
+
+    <delete id="deletebyEach">
+        delete from t_teacher
+        where tea_id in
+        <foreach collection="array" item="tIds" open="(" close=")" separator=",">
+            #{tIds}
+        </foreach>
+    </delete>
+
+
+    <insert id="insert" keyColumn="tea_id" keyProperty="teaId" parameterType="com.powernde.entity.Teacher"
+            useGeneratedKeys="true">
+    insert into t_teacher (tea_name, tea_age, tea_sex, 
+      tea_date)
+    values (#{teaName,jdbcType=VARCHAR}, #{teaAge,jdbcType=VARCHAR}, #{teaSex,jdbcType=VARCHAR}, 
+      #{teaDate,jdbcType=DATE})
+  </insert>
+
+    <insert id="insertSelective" keyColumn="tea_id" keyProperty="teaId" parameterType="com.powernde.entity.Teacher"
+            useGeneratedKeys="true">
+        insert into t_teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="teaName != null">
+                tea_name,
+            </if>
+            <if test="teaAge != null">
+                tea_age,
+            </if>
+            <if test="teaSex != null">
+                tea_sex,
+            </if>
+            <if test="teaDate != null">
+                tea_date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="teaName != null">
+                #{teaName,jdbcType=VARCHAR},
+            </if>
+            <if test="teaAge != null">
+                #{teaAge,jdbcType=VARCHAR},
+            </if>
+            <if test="teaSex != null">
+                #{teaSex,jdbcType=VARCHAR},
+            </if>
+            <if test="teaDate != null">
+                #{teaDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.powernde.entity.Teacher">
+        update t_teacher
+        <set>
+            <if test="teaName != null">
+                tea_name = #{teaName,jdbcType=VARCHAR},
+            </if>
+            <if test="teaAge != null">
+                tea_age = #{teaAge,jdbcType=VARCHAR},
+            </if>
+            <if test="teaSex != null">
+                tea_sex = #{teaSex,jdbcType=VARCHAR},
+            </if>
+            <if test="teaDate != null">
+                tea_date = #{teaDate,jdbcType=DATE},
+            </if>
+        </set>
+        where tea_id = #{teaId,jdbcType=INTEGER}
+
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.powernde.entity.Teacher">
+    update t_teacher
+    set tea_name = #{teaName,jdbcType=VARCHAR},
+      tea_age = #{teaAge,jdbcType=VARCHAR},
+      tea_sex = #{teaSex,jdbcType=VARCHAR},
+      tea_date = #{teaDate,jdbcType=DATE}
+    where tea_id = #{teaId,jdbcType=INTEGER}
+  </update>
+
+</mapper>

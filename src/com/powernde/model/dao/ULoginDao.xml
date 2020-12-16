@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernde.model.dao.ULoginDao">
+    <resultMap id="BaseResultMap" type="com.powernde.entity.ULogin">
+        <id column="u_id" jdbcType="INTEGER" property="uId"/>
+        <result column="u_name" jdbcType="VARCHAR" property="uName"/>
+        <result column="u_passwprd" jdbcType="VARCHAR" property="uPasswprd"/>
+        <result column="u_cold" jdbcType="INTEGER" property="uCold"/>
+        <result column="u_email" jdbcType="VARCHAR" property="uEmail"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    u_id, u_name, u_passwprd, u_cold, u_email
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from u_login
+        where u_id = #{uId,jdbcType=INTEGER}
+    </select>
+    <select id="SelectByPwdAndName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from u_login
+        where u_cold=#{param1} and u_passwprd=#{param2}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from u_login
+    where u_id = #{uId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" keyColumn="u_id" keyProperty="uId" parameterType="com.powernde.entity.ULogin"
+            useGeneratedKeys="true">
+    insert into u_login (u_name, u_passwprd, u_cold, 
+      u_email)
+    values (#{uName,jdbcType=VARCHAR}, #{uPasswprd,jdbcType=VARCHAR}, #{uCold,jdbcType=INTEGER}, 
+      #{uEmail,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" keyColumn="u_id" keyProperty="uId" parameterType="com.powernde.entity.ULogin"
+            useGeneratedKeys="true">
+        insert into u_login
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uName != null">
+                u_name,
+            </if>
+            <if test="uPasswprd != null">
+                u_passwprd,
+            </if>
+            <if test="uCold != null">
+                u_cold,
+            </if>
+            <if test="uEmail != null">
+                u_email,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uName != null">
+                #{uName,jdbcType=VARCHAR},
+            </if>
+            <if test="uPasswprd != null">
+                #{uPasswprd,jdbcType=VARCHAR},
+            </if>
+            <if test="uCold != null">
+                #{uCold,jdbcType=INTEGER},
+            </if>
+            <if test="uEmail != null">
+                #{uEmail,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.powernde.entity.ULogin">
+        update u_login
+        <set>
+            <if test="uName != null">
+                u_name = #{uName,jdbcType=VARCHAR},
+            </if>
+            <if test="uPasswprd != null">
+                u_passwprd = #{uPasswprd,jdbcType=VARCHAR},
+            </if>
+            <if test="uCold != null">
+                u_cold = #{uCold,jdbcType=INTEGER},
+            </if>
+            <if test="uEmail != null">
+                u_email = #{uEmail,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where u_id = #{uId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.powernde.entity.ULogin">
+    update u_login
+    set u_name = #{uName,jdbcType=VARCHAR},
+      u_passwprd = #{uPasswprd,jdbcType=VARCHAR},
+      u_cold = #{uCold,jdbcType=INTEGER},
+      u_email = #{uEmail,jdbcType=VARCHAR}
+    where u_id = #{uId,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>
